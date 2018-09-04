@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   delete 'login',to:'sessions#destroy'
   get 'signup', to: 'users#new'
   resources :users, only: [:index, :show, :new, :create]
+  
+  resources :microposts, only: [:create, :destory]
  end
