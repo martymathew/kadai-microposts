@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_user_logged_in, only: [:index, :show, :followings, :followers]
+  before_action :require_user_logged_in, only: [:index, :show, :followings, :followers, :favorites]
   def index
     @users = User.all.page(params[:page])
   end
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       flash.now[:danger] = 'ユーザの登録に失敗しました。'
       render :new
     end
-  
+  end 
   
   def followings
     @user = User.find(params[:id])
@@ -37,11 +37,22 @@ class UsersController < ApplicationController
     @followers = @user.followers.page(params[:page])
     counts(@user)
   end
-
+  
+  def favorites
+    @user = User.find(params[:id])
+    @microposts = @user.favorites.page(params[:page])
+    counts(@micropost)
+  end 
+  
+  def likes
+    @user = User.find(params[:id])
+    @microposts = @user.favorite_microposts.page(params[:page])
+  end
+  
   private
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
-  end 
+
 end
